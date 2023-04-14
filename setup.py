@@ -9,12 +9,12 @@ with open('LICENSE') as f:
 
 setup(
     name='zalo_sdk',
-    version='0.1.0',
+    version='0.1.3',
     description='Zalo SDK',
     long_description=readme,
     author='Khoa Tran',
     author_email='khoa@connext.biz',
-    url='https://github.com/connext_biz',
+    url='https://github.com/connext-biz/zalo_integration',
     license=license,
     packages=find_packages(exclude=('tests', 'docs'))
 )

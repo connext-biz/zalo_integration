@@ -3,7 +3,7 @@ import json
 
 
 class BaseClient:
-    def __init__(self, access_token: str = "", refresh_token: str = ""):
+    def __init__(self, access_token="", refresh_token=""):
         self._refresh_token = refresh_token
         self._access_token = access_token
 
@@ -23,7 +23,7 @@ class BaseClient:
     def access_token(self, token):
         self._access_token = token
 
-    def send_request(self, method: str, url: str, body: object | str) -> requests.Response:
+    def send_request(self, method, url, body):
         if method == "POST":
             headers = {
                 'Content-Type': "application/json",
@@ -44,3 +44,8 @@ class BaseClient:
         else:
             raise Exception(f"Unknown method '{method}'")
         return response
+
+    def check_http_error(self, response: requests.Response):
+        if response.status_code != 200:
+            raise Exception(
+                f"HTTP Error {response.status_code}: {response.text}")
