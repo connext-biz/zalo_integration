@@ -23,11 +23,12 @@ class BaseClient:
     def access_token(self, token):
         self._access_token = token
 
-    def send_request(self, method, url, body):
+    def send_request(self, method: str, url: str, body: dict, xtra_headers: str = {}):
         if method == "POST":
             headers = {
                 'Content-Type': "application/json",
-                'access_token': self._access_token
+                'access_token': self._access_token,
+                **xtra_headers
             }
             response = requests.post(
                 url,
