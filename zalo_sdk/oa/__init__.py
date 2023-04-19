@@ -1,2 +1,3 @@
-from .Client import Client
-from .ZaloOAException import ZaloOAException
+from .Client import *
+from .ZaloOAException import *
+from .ZaloMessage import *

@@ -5,7 +5,7 @@ import datetime
 import requests
 import urllib.parse
 from zalo_sdk import BaseClient
-from zalo_sdk.oa import ZaloOAException
+import zalo_sdk.oa
 
 
 class Client(BaseClient):
@@ -22,9 +22,10 @@ class Client(BaseClient):
     def check_zalo_error(self, response):
         if "error" in response and response["error"] != 0:
             if "message" in response:
-                raise ZaloOAException(response["error"], response["message"])
-            else:
-                raise ZaloOAException(response["error"])
+                if response["error"] == -216 and "expired" in response["message"]:
+                    raise zalo_sdk.oa.ZaloOAAuthTokenExpiredException(response["error"], response["message"])
+                raise zalo_sdk.oa.ZaloOAException(response["error"], response["message"])
+            raise zalo_sdk.oa.ZaloOAException.ZaloOAException(response["error"])
 
     def request_authoriation_code_url(self, callback_url, challenge_string=None):
         """
@@ -46,10 +47,11 @@ class Client(BaseClient):
 
     def check_and_set_token(self, zalo_response):
         if 'refresh_token' not in zalo_response:
-            raise ZaloException(-1,
-                                "'refresh_token' not found in the response")
+            raise zalo_sdk.oa.ZaloOAException(-1,
+                                  "'refresh_token' not found in the response")
         if 'access_token' not in zalo_response:
-            raise ZaloException(-1, "'access_token' not found in the response")
+            raise zalo_sdk.oa.ZaloOAException(-1,
+                                  "'access_token' not found in the response")
 
         expire_in = int(zalo_response.get("expires_in", 0))
         expire_at = datetime.datetime.now()+datetime.timedelta(seconds=expire_in)
@@ -102,40 +104,18 @@ class Client(BaseClient):
 
         return self.access_token, self.refresh_token, self.expire_at
 
-    def send_message_to_user(self, user_id, message):
-        body = {
-            "recipient": {
-                "user_id": user_id
-            },
-            "message": {
-                "text": message
-            }
-        }
+    def send_message(self, recipient, body=None, action=None):
+        msg_obj = zalo_sdk.oa.ZaloMessage(
+            recipient=recipient,
+            message_body=body,
+            action=action
+        )
         response = self.send_request(
-            "POST", "https://openapi.zalo.me/v2.0/oa/message", body)
+            "POST", "https://openapi.zalo.me/v2.0/oa/message", msg_obj.toDict())
         self.check_http_error(response)
 
         zalo_response = response.json()
         self.check_zalo_error(zalo_response)
-
-        return zalo_response
-
-    def send_response_to_user(self, message_id, message):
-        body = {
-            "recipient": {
-                "message_id": message_id
-            },
-            "message": {
-                "text": message
-            }
-        }
-        response = self.send_request(
-            "POST", "https://openapi.zalo.me/v2.0/oa/message", body)
-        self.check_http_error(response)
-
-        zalo_response = response.json()
-        self.check_zalo_error(zalo_response)
-
         return zalo_response
 
     def get_free_response_quota(self, message_id):

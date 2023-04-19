@@ -49,3 +49,10 @@ class ZaloOAException(Exception):
             return ZaloOAException.ERROR_CODE_TO_STR[self._code]
 
         return "Unknown error"
+
+class ZaloOAAuthTokenExpiredException(ZaloOAException):
+    """
+    Auth token expired expcetion. When we get this exception, we should
+    refresh the auth token to get a new one.
+    """
+    pass
