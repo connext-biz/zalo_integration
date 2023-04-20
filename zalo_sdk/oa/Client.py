@@ -27,11 +27,13 @@ class Client(BaseClient):
                 raise zalo_sdk.oa.ZaloOAException(response["error"], response["message"])
             raise zalo_sdk.oa.ZaloOAException.ZaloOAException(response["error"])
 
-    def request_authoriation_code_url(self, callback_url, challenge_string=None):
+    def request_authoriation_code_url(self, callback_url, code_challenge=None, state=None):
         """
         Get the URL to request the authorization code.
 
-        Official Documentation: https://developers.zalo.me/docs/api/official-account-api/xac-thuc-va-uy-quyen/cach-1-xac-thuc-voi-giao-thuc-oauth/lay-oa-access-token-tu-oa-refresh-token-post-4970
+        Official Documentation:
+        https://developers.zalo.me/docs/api/official-account-api/xac-thuc-va-uy-quyen/cach-1-xac-thuc-voi-giao-thuc-oauth/yeu-cau-cap-moi-oa-access-token-post-4307
+        https://developers.zalo.me/docs/api/official-account-api/xac-thuc-va-uy-quyen/cach-1-xac-thuc-voi-giao-thuc-oauth/lay-oa-access-token-tu-oa-refresh-token-post-4970
         """
         base_url = "https://oauth.zaloapp.com/v4/oa/permission"
         parsed_url = urllib.parse.urlparse(base_url)
@@ -39,8 +41,10 @@ class Client(BaseClient):
             'app_id': self.app_id,
             'redirect_uri': callback_url,
         }
-        if challenge_string is not None:
-            params['state'] = challenge_string
+        if code_challenge is not None:
+            params['code_challenge'] = code_challenge
+        if state is not None:
+            params['state'] = state
 
         auth_url = parsed_url._replace(query=urllib.parse.urlencode(params))
         return auth_url.geturl()
@@ -74,7 +78,7 @@ class Client(BaseClient):
 
         response = requests.post(
             zalo_get_access_token_url, data=body, headers=headers)
-        self.check_http_response(response)
+        self.check_http_error(response)
 
         zalo_response = response.json()
         self.check_zalo_error(zalo_response)
