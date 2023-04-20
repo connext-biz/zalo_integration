@@ -33,7 +33,6 @@ class Client(BaseClient):
 
         Official Documentation:
         https://developers.zalo.me/docs/api/official-account-api/xac-thuc-va-uy-quyen/cach-1-xac-thuc-voi-giao-thuc-oauth/yeu-cau-cap-moi-oa-access-token-post-4307
-        https://developers.zalo.me/docs/api/official-account-api/xac-thuc-va-uy-quyen/cach-1-xac-thuc-voi-giao-thuc-oauth/lay-oa-access-token-tu-oa-refresh-token-post-4970
         """
         base_url = "https://oauth.zaloapp.com/v4/oa/permission"
         parsed_url = urllib.parse.urlparse(base_url)
