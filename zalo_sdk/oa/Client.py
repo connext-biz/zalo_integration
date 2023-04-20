@@ -62,7 +62,7 @@ class Client(BaseClient):
         self.access_token = zalo_response['access_token']
         self.expire_at = int(expire_at.timestamp())
 
-    def get_access_token_from_authorization_code(self, authorization_code):
+    def get_access_token_from_authorization_code(self, authorization_code: str, code_verifier: str):
         zalo_get_access_token_url = "https://oauth.zaloapp.com/v4/oa/access_token"
         headers = {
             'Content-Type': "application/x-www-form-urlencoded",
@@ -72,7 +72,7 @@ class Client(BaseClient):
             'code': authorization_code,
             'app_id': self.app_id,
             'grant_type': 'authorization_code',
-            'code_verifier': 'your_code_verifier'
+            'code_verifier': code_verifier
         }
 
         response = requests.post(
