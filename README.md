@@ -10,6 +10,14 @@ If you found any problems, please create an issue to track it, or feel free to o
 
 `pip install zalo_sdk`
 
+## Build and Release
+
+- Bump new version in setup.py
+- Build and upload to pypi.org
+```
+python3 -m build
+python3 -m twine upload dist/*
+```
 
 ## Documentation
 
