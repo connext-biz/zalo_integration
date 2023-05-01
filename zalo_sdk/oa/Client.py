@@ -25,7 +25,7 @@ class Client(BaseClient):
                 if response["error"] == -216 and "expired" in response["message"]:
                     raise zalo_sdk.oa.ZaloOAAuthTokenExpiredException(response["error"], response["message"])
                 raise zalo_sdk.oa.ZaloOAException(response["error"], response["message"])
-            raise zalo_sdk.oa.ZaloOAException.ZaloOAException(response["error"])
+            raise zalo_sdk.oa.ZaloOAException(response["error"])
 
     def request_authoriation_code_url(self, callback_url, code_challenge=None, state=None):
         """
