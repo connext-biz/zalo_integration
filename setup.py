@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 
-with open('README.md') as f:
+with open('PACKAGE_README.md') as f:
     readme = f.read()
 
 with open('LICENSE') as f:
@@ -9,7 +9,7 @@ with open('LICENSE') as f:
 
 setup(
     name='zalo_sdk',
-    version='0.1.5',
+    version='0.1.6',
     description='Zalo SDK',
     long_description=readme,
     author='Khoa Tran',
