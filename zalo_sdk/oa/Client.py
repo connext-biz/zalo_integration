@@ -6,8 +6,8 @@ import zalo_sdk
 
 class Client(zalo_sdk.BaseClient):
     def __init__(self, app_id, secret_key, access_token="", refresh_token=""):
-        super(zalo_sdk.BaseClient, self).__init__(app_id=app_id, secret_key=secret_key,
-                                         access_token=access_token, refresh_token=refresh_token)
+        super(Client, self).__init__(app_id=app_id, secret_key=secret_key,
+                                     access_token=access_token, refresh_token=refresh_token)
 
     def send_message(self, recipient, body=None, action=None):
         msg_obj = zalo_sdk.oa.ZaloMessage(

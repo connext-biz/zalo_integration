@@ -118,7 +118,7 @@ class BaseClient:
         return auth_url.geturl()
 
     def isAccessTokenExpired(self):
-        return self.expire_at != 0 and self.expire_at < datetime.datetime.utcnow().timestamp()
+        return self._expire_at != 0 and self._expire_at < datetime.datetime.utcnow().timestamp()
         # If expire_at == 0, skip the check
 
     def check_and_set_token(self, zalo_response):
@@ -131,9 +131,9 @@ class BaseClient:
 
         expire_in = int(zalo_response.get("expires_in", 0))
         expire_at = datetime.datetime.now()+datetime.timedelta(seconds=expire_in)
-        self.refresh_token = zalo_response['refresh_token']
-        self.access_token = zalo_response['access_token']
-        self.expire_at = int(expire_at.timestamp())
+        self._refresh_token = zalo_response['refresh_token']
+        self._access_token = zalo_response['access_token']
+        self._expire_at = int(expire_at.timestamp())
 
     def get_access_token_from_authorization_code(self, authorization_code: str, code_verifier: str):
         zalo_get_access_token_url = "https://oauth.zaloapp.com/v4/oa/access_token"
@@ -156,7 +156,7 @@ class BaseClient:
         self.check_zalo_oa_error(zalo_response)
         self.check_and_set_token(zalo_response)
 
-        return self.access_token, self.refresh_token, self.expire_at
+        return self._access_token, self._refresh_token, self._expire_at
 
     def refresh_acccess_token(self):
         zalo_get_access_token_url = "https://oauth.zaloapp.com/v4/oa/access_token"
@@ -178,4 +178,4 @@ class BaseClient:
         self.check_zalo_oa_error(zalo_response)
         self.check_and_set_token(zalo_response)
 
-        return self.access_token, self.refresh_token, self.expire_at
+        return self._access_token, self._refresh_token, self._expire_at
