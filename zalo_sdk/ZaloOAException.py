@@ -1,4 +1,7 @@
-class ZaloOAException(Exception):
+import zalo_sdk
+
+
+class ZaloOAException(zalo_sdk.ZaloException):
     """
     Zalo Official Account specific exception.
 
@@ -35,20 +38,17 @@ class ZaloOAException(Exception):
     }
 
     def __init__(self, code, custom_message=None):
-        self._code = code
-        self._custom_message = custom_message
+        super(ZaloOAException, self).__init__(code, custom_message)
         self._msg = f"Zalo OA error ({self._code}) [{self.errCodeToStr()}]"
         if custom_message is not None:
             self._msg += f": {custom_message}"
-
-    def __str__(self) -> str:
-        return self._msg
 
     def errCodeToStr(self) -> str:
         if self._code in ZaloOAException.ERROR_CODE_TO_STR:
             return ZaloOAException.ERROR_CODE_TO_STR[self._code]
 
         return "Unknown error"
+
 
 class ZaloOAAuthTokenExpiredException(ZaloOAException):
     """
