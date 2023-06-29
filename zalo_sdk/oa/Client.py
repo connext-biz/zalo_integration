@@ -16,7 +16,7 @@ class Client(zalo_sdk.BaseClient):
             action=action
         )
         response = self.send_request(
-            "POST", "https://openapi.zalo.me/v2.0/oa/message", msg_obj.toDict())
+            "POST", "https://openapi.zalo.me/v3.0/oa/message/cs", msg_obj.toDict())
         self.check_http_error(response)
 
         zalo_response = response.json()
