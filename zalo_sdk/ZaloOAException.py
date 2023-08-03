@@ -31,6 +31,7 @@ class ZaloOAException(zalo_sdk.ZaloException):
         -222: "User account has been blocked or not active for more than 45 days",
         -224: "Official Account has not subscribe to the service package",
         -227: "User account has been blocked or not active for more than 45 days",
+        -230: "User has not interacted with the OA in the past 7 days",
         -305: "Offical Account cannot response to user after 48 hours",
         -311: "Out of quota for responding to user message",
         -320: "Application needs to link with Zalo Business Account to use paid features",
