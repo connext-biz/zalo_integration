@@ -9,14 +9,23 @@ class Client(zalo_sdk.BaseClient):
         super(Client, self).__init__(app_id=app_id, secret_key=secret_key,
                                      access_token=access_token, refresh_token=refresh_token)
 
-    def send_message(self, recipient, body=None, action=None):
+    def send_message(self, recipient, body=None, action=None, category="consultant"):
+        if category == "consultant":
+            url = "https://openapi.zalo.me/v3.0/oa/message/cs"
+        elif category == "transaction":
+            url = "https://openapi.zalo.me/v3.0/oa/message/transaction"
+        elif category == "media":
+            url = "https://openapi.zalo.me/v3.0/oa/message/promotion"
+        else:
+            raise ValueError("Invalid message category provided.")
+        
         msg_obj = zalo_sdk.oa.ZaloMessage(
             recipient=recipient,
             message_body=body,
             action=action
         )
         response = self.send_request(
-            "POST", "https://openapi.zalo.me/v3.0/oa/message/cs", msg_obj.toDict())
+            "POST", url, msg_obj.toDict())
         self.check_http_error(response)
 
         zalo_response = response.json()
@@ -50,25 +59,3 @@ class Client(zalo_sdk.BaseClient):
 
         return zalo_response
 
-    def send_message_v2(self, recipient, body=None, action=None, category="consultant"):
-        if category == "consultant":
-            url = "https://openapi.zalo.me/v3.0/oa/message/cs"
-        elif category == "transaction":
-            url = "https://openapi.zalo.me/v3.0/oa/message/transaction"
-        elif category == "media":
-            url = "https://openapi.zalo.me/v3.0/oa/message/promotion"
-        else:
-            raise ValueError("Invalid message category provided.")
-        
-        msg_obj = zalo_sdk.oa.ZaloMessage(
-            recipient=recipient,
-            message_body=body,
-            action=action
-        )
-        response = self.send_request(
-            "POST", url, msg_obj.toDict())
-        self.check_http_error(response)
-
-        zalo_response = response.json()
-        self.check_zalo_oa_error(zalo_response)
-        return zalo_response
