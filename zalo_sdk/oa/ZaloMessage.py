@@ -30,14 +30,14 @@ class ZaloTemplateType(enum.Enum):
 
 
 class ZaloAttachment:
-    def __init__(self, payload_type: ZaloPayloadType, payload):
+    def __init__(self, payload_type: str, payload: dict = {}):
         self.payload_type = payload_type
         self.payload = payload
 
     def toDict(self) -> dict:
         return {
-            "type": self.payload_type.name,
-            "payload": self.payload.toDict()
+            "type": self.payload_type,
+            "payload": self.payload
         }
 
 

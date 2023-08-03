@@ -49,3 +49,26 @@ class Client(zalo_sdk.BaseClient):
         self.check_zalo_oa_error(zalo_response)
 
         return zalo_response
+
+    def send_message_v2(self, recipient, body=None, action=None, category="consultant"):
+        if category == "consultant":
+            url = "https://openapi.zalo.me/v3.0/oa/message/cs"
+        elif category == "transaction":
+            url = "https://openapi.zalo.me/v3.0/oa/message/transaction"
+        elif category == "media":
+            url = "https://openapi.zalo.me/v3.0/oa/message/promotion"
+        else:
+            raise ValueError("Invalid message category provided.")
+        
+        msg_obj = zalo_sdk.oa.ZaloMessage(
+            recipient=recipient,
+            message_body=body,
+            action=action
+        )
+        response = self.send_request(
+            "POST", url, msg_obj.toDict())
+        self.check_http_error(response)
+
+        zalo_response = response.json()
+        self.check_zalo_oa_error(zalo_response)
+        return zalo_response
