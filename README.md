@@ -24,3 +24,13 @@ python3 -m twine upload dist/*
 The code is its own document.
 
 (I'm kidding, I'll add documentation later)
+
+## Running the Test Cases
+To run the test cases, use the following command:
+```
+python test/test_send_text_message.py
+```
+Replace `test_send_text_message.py` with the name of the test file you want to run.
+
+Each test case will print the response from the API after running.
+
