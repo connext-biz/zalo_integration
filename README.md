@@ -28,9 +28,9 @@ The code is its own document.
 ## Running the Test Cases
 To run the test cases, use the following command:
 ```
-python test/test_send_text_message.py
+python test/test_file_name.py
 ```
-Replace `test_send_text_message.py` with the name of the test file you want to run.
+Replace `test_file_name.py` with the name of the test file you want to run.
 
 Each test case will print the response from the API after running.
 
