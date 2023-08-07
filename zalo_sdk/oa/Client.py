@@ -8,6 +8,14 @@ class Client(zalo_sdk.BaseClient):
     def __init__(self, app_id, secret_key, access_token="", refresh_token=""):
         super(Client, self).__init__(app_id=app_id, secret_key=secret_key,
                                      access_token=access_token, refresh_token=refresh_token)
+        
+    def create_request_body(self, recipient, body=None, action=None):
+        msg_obj = zalo_sdk.oa.ZaloMessage(
+            recipient=recipient,
+            message_body=body,
+            action=action
+        )
+        return msg_obj.toDict()
 
     def send_message(self, recipient, body=None, action=None, category="consultant"):
         if category == "consultant":
@@ -19,43 +27,35 @@ class Client(zalo_sdk.BaseClient):
         else:
             raise ValueError("Invalid message category provided.")
         
-        msg_obj = zalo_sdk.oa.ZaloMessage(
-            recipient=recipient,
-            message_body=body,
-            action=action
-        )
+        msg_body = self.create_request_body(recipient, body, action)
+        
         response = self.send_request(
-            "POST", url, msg_obj.toDict())
-        self.check_http_error(response)
-
-        zalo_response = response.json()
-        self.check_zalo_oa_error(zalo_response)
-        return zalo_response
+            method="POST", url=url, body=msg_body)
+        return self._validate_zalo_response(response)
 
     def get_free_response_quota(self, message_id):
         body = {
             "message_id": message_id
         }
         response = self.send_request(
-            "POST", "https://openapi.zalo.me/v2.0/oa/quota/message", body)
-        self.check_http_error(response)
-
-        zalo_response = response.json()
-        self.check_zalo_oa_error(zalo_response)
-
-        return zalo_response
+            method="POST", url="https://openapi.zalo.me/v2.0/oa/quota/message", body=body)
+        return self._validate_zalo_response(response)
 
     def get_profile(self, user_id):
         params = {
             "user_id": user_id
         }
         response = self.send_request(
-            "GET", "https://openapi.zalo.me/v2.0/oa/getprofile", params
+            method="GET", url="https://openapi.zalo.me/v2.0/oa/getprofile", body=params
         )
+        return self._validate_zalo_response(response)
+    
+    def _validate_zalo_response(self, response):
         self.check_http_error(response)
 
         zalo_response = response.json()
         self.check_zalo_oa_error(zalo_response)
+        return zalo_response        
 
-        return zalo_response
+
 

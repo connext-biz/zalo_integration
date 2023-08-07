@@ -40,12 +40,12 @@ class ZaloAttachment:
             "payload": self.payload
         }
 
-
 class ZaloMessageBody:
-    def __init__(self, text: str = None, attachment: ZaloAttachment = None):
+    def __init__(self, text: str = None, attachment: ZaloAttachment = None, quote_message_id: str = None):
         self.body = {}
         self.body["text"] = text
         self.body["attachment"] = attachment
+        self.body["quote_message_id"] = quote_message_id
 
     def toDict(self) -> dict:
         return {k: v if isinstance(v, str) else v.toDict() for k, v in dict(filter(lambda pair: pair[1] is not None, self.body.items())).items()}
