@@ -6,6 +6,7 @@ from test.test_send_request_form_message import ZaloSendRequestFormMessage
 from test.test_send_sticker_message import ZaloSendStickerMessage
 from test.test_send_transaction_message import ZaloSendTransactionMessage
 from test.test_send_file_message import ZaloSendFileMessage
+from test.test_get_oa_information import ZaloGetOAInfoMessage
 
 def create_test_suite():
     test_suite = unittest.TestSuite()
@@ -16,6 +17,7 @@ def create_test_suite():
     test_suite.addTest(unittest.TestLoader().loadTestsFromTestCase(ZaloSendStickerMessage))
     test_suite.addTest(unittest.TestLoader().loadTestsFromTestCase(ZaloSendTransactionMessage))
     test_suite.addTest(unittest.TestLoader().loadTestsFromTestCase(ZaloSendFileMessage))
+    test_suite.addTest(unittest.TestLoader().loadTestsFromTestCase(ZaloGetOAInfoMessage))
 
     return test_suite
 

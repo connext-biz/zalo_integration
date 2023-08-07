@@ -1,3 +1,4 @@
+from zalo_sdk.BaseClient import BaseClient
 from zalo_sdk.oa.Client import Client
 from zalo_sdk.oa.ZaloMessage import *
 
@@ -148,3 +149,20 @@ class ZaloSendTextMessage(ZaloSendMessage):
 
         # Check if the error code matches the expected -216
         self.assertEqual(context.exception.args[0], -216)
+
+    def test_create_request_header(self):
+        client = BaseClient(
+            app_id=self.app_id, 
+            secret_key=self.secret_key, 
+            access_token=self.access_token, 
+            refresh_token=self.refresh_token
+        )
+
+        header = client.create_request_header(method="POST")
+
+        data = {
+            'Content-Type': "application/json",
+            'access_token': self.access_token,
+        }
+
+        self.assertEqual(header, data)
