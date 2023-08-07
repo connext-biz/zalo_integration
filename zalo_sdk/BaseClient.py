@@ -30,6 +30,21 @@ class BaseClient:
     def access_token(self, token):
         self._access_token = token
 
+    def create_request_header(self, method: str, xtra_headers: dict = {}) -> dict:
+        if method == "POST":
+            headers = {
+                'Content-Type': "application/json",
+                'access_token': self._access_token,
+                **xtra_headers
+            }
+        elif method == "GET":
+            headers = {
+                'access_token': self._access_token
+            }
+        else:
+            raise Exception(f"Unknown method '{method}'")
+        return headers
+
     def send_request(self, method: str, url: str, body: dict = None, params: dict = None, xtra_headers: str = {}):
         """
         Send a request to Zalo, adding required tokens
@@ -42,12 +57,9 @@ class BaseClient:
                will be converted to JSON string and set the data param.
         :xtra_headers: Other HTTP headers to set with this request
         """
+        headers = self.create_request_header(method, xtra_headers)
+
         if method == "POST":
-            headers = {
-                'Content-Type': "application/json",
-                'access_token': self._access_token,
-                **xtra_headers
-            }
             if body is None:
                 body = {}
             response = requests.post(
@@ -55,9 +67,6 @@ class BaseClient:
                 json=body,
                 headers=headers)
         elif method == "GET":
-            headers = {
-                'access_token': self._access_token
-            }
             if params is None:
                 params = {}
             if body is not None:
