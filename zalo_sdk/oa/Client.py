@@ -27,26 +27,29 @@ class Client(zalo_sdk.BaseClient):
         else:
             raise ValueError("Invalid message category provided.")
         
+        msg_header = self.create_request_header(method="POST")
         msg_body = self.create_request_body(recipient, body, action)
         
         response = self.send_request(
-            method="POST", url=url, body=msg_body)
+            method="POST", url=url, body=msg_body, headers=msg_header)
         return self._validate_zalo_response(response)
 
     def get_free_response_quota(self, message_id):
+        headers = self.create_request_header(method="POST")
         body = {
             "message_id": message_id
         }
         response = self.send_request(
-            method="POST", url="https://openapi.zalo.me/v2.0/oa/quota/message", body=body)
+            method="POST", url="https://openapi.zalo.me/v2.0/oa/quota/message", body=body, headers=headers)
         return self._validate_zalo_response(response)
 
     def get_profile(self, user_id):
+        headers = self.create_request_header(method="GET")
         params = {
             "user_id": user_id
         }
         response = self.send_request(
-            method="GET", url="https://openapi.zalo.me/v2.0/oa/getprofile", body=params
+            method="GET", url="https://openapi.zalo.me/v2.0/oa/getprofile", body=params, headers=headers
         )
         return self._validate_zalo_response(response)
     
