@@ -46,7 +46,7 @@ class BaseClient:
             raise Exception(f"Unknown method '{method}'")
         return headers
 
-    def send_request(self, method: str, url: str, body: dict = None, params: dict = None, headers: dict = {}):
+    def send_request(self, method: str, url: str, body: dict = None, params: dict = None, headers: dict = {}, files = None):
         """
         Send a request to Zalo, adding required tokens
 
@@ -65,6 +65,7 @@ class BaseClient:
             response = requests.post(
                 url,
                 json=body,
+                files=files,
                 headers=headers)
         elif method == "GET":
             if params is None:
