@@ -17,7 +17,7 @@ class Client(zalo_sdk.BaseClient):
         )
         return msg_obj.toDict()
 
-    def send_message(self, recipient, body=None, action=None, category="consultant"):
+    def send_message(self, recipient, body=None, action=None, category="consultant", files=None):
         if category == "consultant":
             url = "https://openapi.zalo.me/v3.0/oa/message/cs"
         elif category == "transaction":
@@ -31,7 +31,7 @@ class Client(zalo_sdk.BaseClient):
         msg_body = self.create_request_body(recipient, body, action)
         
         response = self.send_request(
-            method="POST", url=url, body=msg_body, headers=msg_header)
+            method="POST", url=url, body=msg_body, headers=msg_header, files=files)
         return self._validate_zalo_response(response)
 
     def get_free_response_quota(self, message_id):
