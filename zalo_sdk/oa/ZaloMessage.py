@@ -30,22 +30,22 @@ class ZaloTemplateType(enum.Enum):
 
 
 class ZaloAttachment:
-    def __init__(self, payload_type: ZaloPayloadType, payload):
+    def __init__(self, payload_type: str, payload: dict = {}):
         self.payload_type = payload_type
         self.payload = payload
 
     def toDict(self) -> dict:
         return {
-            "type": self.payload_type.name,
-            "payload": self.payload.toDict()
+            "type": self.payload_type,
+            "payload": self.payload
         }
 
-
 class ZaloMessageBody:
-    def __init__(self, text: str = None, attachment: ZaloAttachment = None):
+    def __init__(self, text: str = None, attachment: ZaloAttachment = None, quote_message_id: str = None):
         self.body = {}
         self.body["text"] = text
         self.body["attachment"] = attachment
+        self.body["quote_message_id"] = quote_message_id
 
     def toDict(self) -> dict:
         return {k: v if isinstance(v, str) else v.toDict() for k, v in dict(filter(lambda pair: pair[1] is not None, self.body.items())).items()}
