@@ -2,7 +2,6 @@
 # All rights reserved.
 
 import zalo_sdk
-import io
 
 
 class Client(zalo_sdk.BaseClient):
@@ -33,21 +32,6 @@ class Client(zalo_sdk.BaseClient):
         
         response = self.send_request(
             method="POST", url=url, body=msg_body, headers=msg_header, files=files)
-        return self._validate_zalo_response(response)
-    
-    def upload_file(self, file_data: bytes, file_type: str = "file"):
-        headers = self.create_request_header(method="POST", type="file")
-        if file_type == "file":
-            url = "https://openapi.zalo.me/v2.0/oa/upload/file"
-        elif file_type == "image":
-            url = "https://openapi.zalo.me/v2.0/oa/upload/image"
-        else:
-            raise ValueError("Invalid file type provided.")
-        files = {
-            "file": io.BytesIO(file_data)
-        }
-        response = self.send_request(
-            method="POST", url=url, headers=headers, files=files)
         return self._validate_zalo_response(response)
 
     def get_free_response_quota(self, message_id):
