@@ -13,9 +13,9 @@ class ZaloSendRequestBody(ZaloSendMessage):
         client = Client(self.app_id, self.secret_key, self.access_token, self.refresh_token)
 
         # Call the send_message function and assert the response
-        body = client.create_request_body(recipient=recipient, body=message_body)
+        generated_body = client.create_request_body(recipient=recipient, body=message_body)
 
-        data = {
+        expected_body = {
             "recipient": {
                 "user_id": self.user_id
             },
@@ -24,7 +24,7 @@ class ZaloSendRequestBody(ZaloSendMessage):
             }
         }
 
-        self.assertEqual(body, data)
+        self.assertEqual(generated_body, expected_body)
 
     def test_send_long_text_message_body(self):
         recipient = ZaloRecipient(user_id=self.user_id)
@@ -58,9 +58,9 @@ class ZaloSendRequestBody(ZaloSendMessage):
         client = Client(self.app_id, self.secret_key, self.access_token, self.refresh_token)
 
         # Call the send_message function and assert the response
-        body = client.create_request_body(recipient=recipient, body=message_body)
+        generated_body = client.create_request_body(recipient=recipient, body=message_body)
 
-        data = {
+        expected_body = {
             "recipient": {
                 "user_id": self.user_id
             },
@@ -92,7 +92,7 @@ class ZaloSendRequestBody(ZaloSendMessage):
             """
             }
         }
-        self.assertEqual(body, data)
+        self.assertEqual(generated_body, expected_body)
 
 
     def test_send_transaction_message_body(self):
@@ -163,9 +163,9 @@ class ZaloSendRequestBody(ZaloSendMessage):
         client = Client(self.app_id, self.secret_key, self.access_token, self.refresh_token)
 
         # Call the send_message function and assert the response
-        body = client.create_request_body(recipient=recipient, body=message_body)
+        generated_body = client.create_request_body(recipient=recipient, body=message_body)
 
-        data = {
+        expected_body = {
             "recipient": {"user_id": self.user_id},
             "message": {
                 "attachment": {
@@ -231,7 +231,7 @@ class ZaloSendRequestBody(ZaloSendMessage):
             },
         }
 
-        self.assertEqual(body, data)
+        self.assertEqual(generated_body, expected_body)
 
 
     def test_send_sticker_message_body(self):
@@ -254,9 +254,9 @@ class ZaloSendRequestBody(ZaloSendMessage):
         client = Client(self.app_id, self.secret_key, self.access_token, self.refresh_token)
 
         # Call the send_message function and assert the response
-        body = client.create_request_body(recipient=recipient, body=message_body)
+        generated_body = client.create_request_body(recipient=recipient, body=message_body)
 
-        data = {
+        expected_body = {
             "recipient": {"user_id": self.user_id},
             "message": {
                 "attachment": {
@@ -274,7 +274,7 @@ class ZaloSendRequestBody(ZaloSendMessage):
             },
         }
 
-        self.assertEqual(body, data)
+        self.assertEqual(generated_body, expected_body)
 
 
     def test_send_request_form_message_body(self):
@@ -298,9 +298,9 @@ class ZaloSendRequestBody(ZaloSendMessage):
         client = Client(self.app_id, self.secret_key, self.access_token, self.refresh_token)
 
         # Call the send_message function and assert the response
-        body = client.create_request_body(recipient=recipient, body=message_body)
+        generated_body = client.create_request_body(recipient=recipient, body=message_body)
 
-        data = {
+        expected_body = {
             "recipient": {"user_id": self.user_id},
             "message": {
                 "attachment": {
@@ -319,7 +319,7 @@ class ZaloSendRequestBody(ZaloSendMessage):
             },
         }
 
-        self.assertEqual(body, data)
+        self.assertEqual(generated_body, expected_body)
 
 
     def test_send_reply_message_body(self):
@@ -332,9 +332,9 @@ class ZaloSendRequestBody(ZaloSendMessage):
         client = Client(self.app_id, self.secret_key, self.access_token, self.refresh_token)
 
         # Call the send_message function and assert the response
-        body = client.create_request_body(recipient=recipient, body=message_body)
+        generated_body = client.create_request_body(recipient=recipient, body=message_body)
 
-        data = {
+        expected_body = {
             "recipient": {
                 "user_id": self.user_id
             },
@@ -344,7 +344,7 @@ class ZaloSendRequestBody(ZaloSendMessage):
             }
         }
 
-        self.assertEqual(body, data)
+        self.assertEqual(generated_body, expected_body)
 
 
     def test_send_media_message_body(self):
@@ -402,9 +402,9 @@ class ZaloSendRequestBody(ZaloSendMessage):
         client = Client(self.app_id, self.secret_key, self.access_token, self.refresh_token)
 
         # Call the send_message function and assert the response
-        body = client.create_request_body(recipient=recipient, body=message_body)
+        generated_body = client.create_request_body(recipient=recipient, body=message_body)
 
-        data = {
+        expected_body = {
             "recipient": {"user_id": self.user_id},
             "message": {
                 "attachment": {
@@ -457,7 +457,7 @@ class ZaloSendRequestBody(ZaloSendMessage):
             },
         }
 
-        self.assertEqual(body, data)
+        self.assertEqual(generated_body, expected_body)
 
 
     def test_send_image_message_body(self):
@@ -481,9 +481,9 @@ class ZaloSendRequestBody(ZaloSendMessage):
         client = Client(self.app_id, self.secret_key, self.access_token, self.refresh_token)
 
         # Call the send_message function and assert the response
-        body = client.create_request_body(recipient=recipient, body=message_body)
+        generated_body = client.create_request_body(recipient=recipient, body=message_body)
 
-        data = {
+        expected_body = {
             "recipient": {"user_id": self.user_id},
             "message": {
                 "text": "Zalo đạt 100 triệu người dùng",
@@ -502,4 +502,4 @@ class ZaloSendRequestBody(ZaloSendMessage):
             },
         }
 
-        self.assertEqual(body, data)
+        self.assertEqual(generated_body, expected_body)

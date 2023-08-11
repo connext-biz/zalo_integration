@@ -14,14 +14,14 @@ class ZaloSendRequestHeader(ZaloSendMessage):
             refresh_token=self.refresh_token
         )
 
-        header = client.create_request_header(method="POST")
+        generated_header = client.create_request_header(method="POST")
 
-        data = {
+        expected_header = {
             'Content-Type': "application/json",
             'access_token': self.access_token,
         }
 
-        self.assertEqual(header, data)
+        self.assertEqual(generated_header, expected_header)
 
     def test_get_oa_information_header(self):
         client = BaseClient(
@@ -33,13 +33,13 @@ class ZaloSendRequestHeader(ZaloSendMessage):
 
         
         # Call the create_request_header function and assert the response
-        header = client.create_request_header(method="GET")
+        generated_header = client.create_request_header(method="GET")
 
-        data = {
+        expected_header = {
             'access_token': self.access_token,
         }
 
-        self.assertEqual(header, data)
+        self.assertEqual(generated_header, expected_header)
 
     def test_send_file_header(self):
         client = BaseClient(
@@ -51,10 +51,10 @@ class ZaloSendRequestHeader(ZaloSendMessage):
 
         
         # Call the create_request_header function and assert the response
-        header = client.create_request_header(method="GET", type="file")
+        generated_header = client.create_request_header(method="GET", type="file")
 
-        data = {
+        expected_header = {
             'access_token': self.access_token,
         }
 
-        self.assertEqual(header, data)
+        self.assertEqual(generated_header, expected_header)
