@@ -51,7 +51,7 @@ class Client(zalo_sdk.BaseClient):
         return self._validate_zalo_response(response)
 
     def get_free_response_quota(self, message_id):
-        headers = self.create_request_header(method="POST")
+        headers = self.create_request_header(method="POST", type="file")
         body = {
             "message_id": message_id
         }
