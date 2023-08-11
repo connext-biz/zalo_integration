@@ -36,7 +36,7 @@ class Client(zalo_sdk.BaseClient):
         return self._validate_zalo_response(response)
     
     def upload_file(self, file_data: bytes, file_type: str = "file"):
-        headers = self.create_request_header(method="POST")
+        headers = self.create_request_header(method="POST", type="file")
         if file_type == "file":
             url = "https://openapi.zalo.me/v2.0/oa/upload/file"
         elif file_type == "image":
@@ -51,7 +51,7 @@ class Client(zalo_sdk.BaseClient):
         return self._validate_zalo_response(response)
 
     def get_free_response_quota(self, message_id):
-        headers = self.create_request_header(method="POST", type="file")
+        headers = self.create_request_header(method="POST")
         body = {
             "message_id": message_id
         }
