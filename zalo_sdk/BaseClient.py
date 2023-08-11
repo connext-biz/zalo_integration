@@ -30,17 +30,17 @@ class BaseClient:
     def access_token(self, token):
         self._access_token = token
 
-    def create_request_header(self, method: str, xtra_headers: dict = {}) -> dict:
-        if method == "POST":
-            headers = {
-                'Content-Type': "application/json",
-                'access_token': self._access_token,
-                **xtra_headers,
-            }
-        elif method == "GET":
+    def create_request_header(self, method: str, xtra_headers: dict = {}, type: str = "") -> dict:
+        if method == "GET" or (method == 'POST' and type == "file"):
             headers = {
                 'access_token': self._access_token,
                 **xtra_headers,
+            } 
+        elif method == "POST":
+            headers = {
+                    'Content-Type': "application/json",
+                    'access_token': self._access_token,
+                    **xtra_headers,
             }
         else:
             raise Exception(f"Unknown method '{method}'")
