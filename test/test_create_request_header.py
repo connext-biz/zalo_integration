@@ -40,3 +40,21 @@ class ZaloSendRequestHeader(ZaloSendMessage):
         }
 
         self.assertEqual(header, data)
+
+    def test_send_file_header(self):
+        client = BaseClient(
+            app_id=self.app_id, 
+            secret_key=self.secret_key, 
+            access_token=self.access_token, 
+            refresh_token=self.refresh_token
+        )
+
+        
+        # Call the create_request_header function and assert the response
+        header = client.create_request_header(method="GET", type="file")
+
+        data = {
+            'access_token': self.access_token,
+        }
+
+        self.assertEqual(header, data)
