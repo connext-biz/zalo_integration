@@ -24,3 +24,11 @@ python3 -m twine upload dist/*
 The code is its own document.
 
 (I'm kidding, I'll add documentation later)
+
+## Running the Test Cases
+Before running the test cases, make sure to fill out all the required parameters in the test/base.py file
+To run all the test cases, use the following command:
+```
+python run_tests.py
+```
+If you want to skip running a specific test case or a group of test cases, you can comment out the corresponding lines in the create_test_suite function.
