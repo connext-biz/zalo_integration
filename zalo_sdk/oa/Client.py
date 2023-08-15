@@ -35,7 +35,7 @@ class Client(zalo_sdk.BaseClient):
             method="POST", url=url, body=msg_body, headers=msg_header, files=files)
         return self._validate_zalo_response(response)
     
-    def upload_file(self, file_data: bytes, file_type: str = "file"):
+    def upload_file(self, file_data: bytes, file_type: str = "file", file_name: str = "", mime_type: str = ""):
         headers = self.create_request_header(method="POST", type="file")
         if file_type == "file":
             url = "https://openapi.zalo.me/v2.0/oa/upload/file"
@@ -44,7 +44,7 @@ class Client(zalo_sdk.BaseClient):
         else:
             raise ValueError("Invalid file type provided.")
         files = {
-            "file": io.BytesIO(file_data)
+            "file": (file_name, io.BytesIO(file_data), mime_type)
         }
         response = self.send_request(
             method="POST", url=url, headers=headers, files=files)
