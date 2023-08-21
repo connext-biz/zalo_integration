@@ -9,7 +9,7 @@ with open('LICENSE') as f:
 
 setup(
     name='zalo_sdk',
-    version='0.2.3',
+    version='0.2.4',
     description='Zalo SDK',
     long_description=readme,
     author='Khoa Tran',
