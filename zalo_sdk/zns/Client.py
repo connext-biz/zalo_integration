@@ -21,8 +21,10 @@ class Client(zalo_sdk.BaseClient):
         }
         if status is not None:
             params["status"] = status.value
+
+        msg_header = self.create_request_header(method="GET")
         response = self.send_request(
-            "GET", "https://business.openapi.zalo.me/template/all", params=params
+            method="GET", url="https://business.openapi.zalo.me/template/all", params=params, headers=msg_header
         )
         self.check_http_error(response)
 
@@ -42,8 +44,10 @@ class Client(zalo_sdk.BaseClient):
         if dev_mode==True:
             body["mode"] = "development"
 
+        msg_header = self.create_request_header(method="POST")
+
         response = self.send_request(
-            "POST", "https://business.openapi.zalo.me/message/template", body=body)
+            method="POST", url="https://business.openapi.zalo.me/message/template", body=body, headers=msg_header)
         self.check_http_error(response)
 
         zalo_response = response.json()
