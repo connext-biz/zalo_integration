@@ -25,6 +25,8 @@ class Client(zalo_sdk.BaseClient):
             url = "https://openapi.zalo.me/v3.0/oa/message/transaction"
         elif category == "media":
             url = "https://openapi.zalo.me/v3.0/oa/message/promotion"
+        elif category == "action":
+            url = "https://openapi.zalo.me/v2.0/oa/message"
         else:
             raise ValueError("Invalid message category provided.")
         
@@ -74,7 +76,7 @@ class Client(zalo_sdk.BaseClient):
 
         zalo_response = response.json()
         self.check_zalo_oa_error(zalo_response)
-        return zalo_response        
+        return zalo_response
 
 
 
