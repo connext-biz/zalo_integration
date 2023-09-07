@@ -503,3 +503,27 @@ class ZaloSendRequestBody(ZaloSendMessage):
         }
 
         self.assertEqual(generated_body, expected_body)
+
+    def test_send_action_message_body(self):
+        recipient = ZaloRecipient(user_id=self.user_id)
+        message_body = ZaloAction(
+            react_icon = "/-strong",
+            react_message_id= "d38a3d9e89585f02064d",
+        )
+
+        client = Client(self.app_id, self.secret_key, self.access_token, self.refresh_token)
+
+        # Call the send_message function and assert the response
+        generated_body = client.create_request_body(recipient=recipient, action=message_body)
+
+        expected_body = {
+            "recipient": {
+                "user_id": self.user_id
+            },
+            "sender_action": {
+                "react_icon": "/-strong",
+                "react_message_id": "d38a3d9e89585f02064d"
+            }
+        }
+
+        self.assertEqual(generated_body, expected_body)
