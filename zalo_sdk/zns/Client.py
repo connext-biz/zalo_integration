@@ -10,9 +10,11 @@ class ZNSTemplateStatus(Enum):
 
 
 class Client(zalo_sdk.BaseClient):
-    def __init__(self, app_id, secret_key, access_token="", refresh_token=""):
+    def __init__(self, app_id, secret_key, access_token="", refresh_token="", **kwargs):
         super(Client, self).__init__(app_id=app_id, secret_key=secret_key,
-                                     access_token=access_token, refresh_token=refresh_token)
+                                     access_token=access_token, refresh_token=refresh_token,
+                                     **kwargs)
+        self.endpoint_prefix = kwargs['endpoint_prefix'] if 'endpoint_prefix' in kwargs else "https://business.openapi.zalo.me"
 
     def get_template_list(self, offset: int, limit: int, status: ZNSTemplateStatus = None):
         params = {
@@ -23,8 +25,9 @@ class Client(zalo_sdk.BaseClient):
             params["status"] = status.value
 
         msg_header = self.create_request_header(method="GET")
+        url = f"{self.endpoint_prefix}/template/all"
         response = self.send_request(
-            method="GET", url="https://business.openapi.zalo.me/template/all", params=params, headers=msg_header
+            method="GET", url=url, params=params, headers=msg_header
         )
         self.check_http_error(response)
 
@@ -46,8 +49,9 @@ class Client(zalo_sdk.BaseClient):
 
         msg_header = self.create_request_header(method="POST")
 
+        url = f"{self.endpoint_prefix}/message/template"
         response = self.send_request(
-            method="POST", url="https://business.openapi.zalo.me/message/template", body=body, headers=msg_header)
+            method="POST", url=url, body=body, headers=msg_header)
         self.check_http_error(response)
 
         zalo_response = response.json()

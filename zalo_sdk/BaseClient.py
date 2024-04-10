@@ -7,12 +7,12 @@ import urllib.parse
 
 
 class BaseClient:
-    def __init__(self, access_token="", refresh_token="", app_id="", secret_key=""):
+    def __init__(self, access_token="", refresh_token="", app_id="", secret_key="", **kwargs):
         self._refresh_token = refresh_token
         self._access_token = access_token
         self._app_id = app_id
         self._secret_key = secret_key
-        self._expire_at = 0
+        self._expire_at = int(kwargs['expire_at']) if 'expire_at' in kwargs else 0
 
     @property
     def refresh_token(self):
