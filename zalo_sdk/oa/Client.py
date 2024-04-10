@@ -6,9 +6,11 @@ import io
 
 
 class Client(zalo_sdk.BaseClient):
-    def __init__(self, app_id, secret_key, access_token="", refresh_token=""):
+    def __init__(self, app_id, secret_key, access_token="", refresh_token="", **kwargs):
         super(Client, self).__init__(app_id=app_id, secret_key=secret_key,
-                                     access_token=access_token, refresh_token=refresh_token)
+                                     access_token=access_token, refresh_token=refresh_token,
+                                     **kwargs)
+        self.endpoint_prefix = kwargs['endpoint_prefix'] if 'endpoint_prefix' in kwargs else "https://openapi.zalo.me"
         
     def create_request_body(self, recipient, body=None, action=None):
         msg_obj = zalo_sdk.oa.ZaloMessage(
@@ -20,13 +22,13 @@ class Client(zalo_sdk.BaseClient):
 
     def send_message(self, recipient, body=None, action=None, category="consultant", files=None):
         if category == "consultant":
-            url = "https://openapi.zalo.me/v3.0/oa/message/cs"
+            url = f"{self.endpoint_prefix}/v3.0/oa/message/cs"
         elif category == "transaction":
-            url = "https://openapi.zalo.me/v3.0/oa/message/transaction"
+            url = f"{self.endpoint_prefix}/v3.0/oa/message/transaction"
         elif category == "media":
-            url = "https://openapi.zalo.me/v3.0/oa/message/promotion"
+            url = f"{self.endpoint_prefix}/v3.0/oa/message/promotion"
         elif category == "action":
-            url = "https://openapi.zalo.me/v2.0/oa/message"
+            url = f"{self.endpoint_prefix}/v2.0/oa/message"
         else:
             raise ValueError("Invalid message category provided.")
         
@@ -40,9 +42,9 @@ class Client(zalo_sdk.BaseClient):
     def upload_file(self, file_data: bytes, file_type: str = "file", file_name: str = "", mime_type: str = ""):
         headers = self.create_request_header(method="POST", type="file")
         if file_type == "file":
-            url = "https://openapi.zalo.me/v2.0/oa/upload/file"
+            url = f"{self.endpoint_prefix}/v2.0/oa/upload/file"
         elif file_type == "image":
-            url = "https://openapi.zalo.me/v2.0/oa/upload/image"
+            url = f"{self.endpoint_prefix}/v2.0/oa/upload/image"
         else:
             raise ValueError("Invalid file type provided.")
         files = {
@@ -57,8 +59,9 @@ class Client(zalo_sdk.BaseClient):
         body = {
             "message_id": message_id
         }
+        url = f"{self.endpoint_prefix}/v2.0/oa/quota/message"
         response = self.send_request(
-            method="POST", url="https://openapi.zalo.me/v2.0/oa/quota/message", body=body, headers=headers)
+            method="POST", url=url, body=body, headers=headers)
         return self._validate_zalo_response(response)
 
     def get_profile(self, user_id):
@@ -66,8 +69,9 @@ class Client(zalo_sdk.BaseClient):
         params = {
             "user_id": user_id
         }
+        url = f"{self.endpoint_prefix}/v2.0/oa/getprofile"
         response = self.send_request(
-            method="GET", url="https://openapi.zalo.me/v2.0/oa/getprofile", body=params, headers=headers
+            method="GET", url=url, body=params, headers=headers
         )
         return self._validate_zalo_response(response)
     
