@@ -75,6 +75,17 @@ class Client(zalo_sdk.BaseClient):
         )
         return self._validate_zalo_response(response)
     
+    def get_user_detail(self, user_id):
+        headers = self.create_request_header(method="GET")
+        params = {
+            "user_id": user_id
+        }
+        url = f"{self.endpoint_prefix}/v3.0/oa/user/detail"
+        response = self.send_request(
+            method="GET", url=url, body=params, headers=headers
+        )
+        return self._validate_zalo_response(response)
+    
     def _validate_zalo_response(self, response):
         self.check_http_error(response)
 
