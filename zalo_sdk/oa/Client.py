@@ -63,6 +63,31 @@ class Client(zalo_sdk.BaseClient):
         response = self.send_request(
             method="POST", url=url, body=body, headers=headers)
         return self._validate_zalo_response(response)
+    
+    def get_zalo_oa_quotas(self, quota_owner: str, product_type: str = "", quota_type: str = ""):
+        headers = self.create_request_header(method="POST")
+        body = {
+            "quota_owner": quota_owner,
+        }
+        if product_type:
+            body["product_type"] = product_type
+        if quota_type:
+            body["quota_type"] = quota_type
+        url = f"{self.endpoint_prefix}/v3.0/oa/quota/message"
+        response = self.send_request(
+            method="POST", url=url, body=body, headers=headers)
+        return self._validate_zalo_response(response)
+
+    def get_zalo_user_quotas(self, user_id: str):
+        headers = self.create_request_header(method="POST")
+        params = {
+            "user_id": user_id
+        }
+        url = f"{self.endpoint_prefix}/v3.0/oa/quota/message"
+        response = self.send_request(
+            method="POST", url=url, body=params, headers=headers
+        )
+        return self._validate_zalo_response(response)
 
     def get_profile(self, user_id):
         headers = self.create_request_header(method="GET")
