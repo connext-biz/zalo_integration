@@ -65,14 +65,39 @@ class Client(zalo_sdk.BaseClient):
         return self._validate_zalo_response(response)
     
     def get_zalo_oa_quotas(self, quota_owner: str, product_type: str = "", quota_type: str = ""):
+        """
+        Get Zalo OA quotas
+        :param quota_owner: str: OA or App
+        :param product_type: str: cs or transaction
+        :param quota_type: str: sub_quota, purchase_quota, reward_quota
+        """
         headers = self.create_request_header(method="POST")
+        # Validate quota_owner
+        valid_quota_owners = ["OA", "App"]
+        if quota_owner not in valid_quota_owners:
+            raise ValueError(f"Invalid quota_owner: {quota_owner}. Valid values are: {', '.join(valid_quota_owners)}")
         body = {
             "quota_owner": quota_owner,
         }
+        
+        # Validate product_type
+        # cs: tin Tư vấn, transaction: tin Giao dịch
+        valid_product_types = ["cs", "transaction"]
         if product_type:
+            if product_type not in valid_product_types:
+                raise ValueError(f"Invalid product_type: {product_type}. Valid values are: {', '.join(valid_product_types)}")
             body["product_type"] = product_type
+        
+        # Validate quota_type
+        # sub_quota: quota tin theo gói dịch vụ OA
+        # purchase_quota: quota tin mua lẻ (sắp ra mắt)
+        # reward_quota: quota tin được tặng từ các chương trình khuyến mãi (sắp ra mắt)
+        valid_quota_types = ["sub_quota", "purchase_quota", "reward_quota"]
         if quota_type:
+            if quota_type not in valid_quota_types:
+                raise ValueError(f"Invalid quota_type: {quota_type}. Valid values are: {', '.join(valid_quota_types)}")
             body["quota_type"] = quota_type
+
         url = f"{self.endpoint_prefix}/v3.0/oa/quota/message"
         response = self.send_request(
             method="POST", url=url, body=body, headers=headers)
