@@ -11,7 +11,7 @@ class Client(zalo_sdk.BaseClient):
                                      access_token=access_token, refresh_token=refresh_token,
                                      **kwargs)
         self.endpoint_prefix = kwargs['endpoint_prefix'] if 'endpoint_prefix' in kwargs else "https://openapi.zalo.me"
-        
+
     def create_request_body(self, recipient, body=None, action=None):
         msg_obj = zalo_sdk.oa.ZaloMessage(
             recipient=recipient,
@@ -31,14 +31,14 @@ class Client(zalo_sdk.BaseClient):
             url = f"{self.endpoint_prefix}/v2.0/oa/message"
         else:
             raise ValueError("Invalid message category provided.")
-        
+
         msg_header = self.create_request_header(method="POST")
         msg_body = self.create_request_body(recipient, body, action)
-        
+
         response = self.send_request(
             method="POST", url=url, body=msg_body, headers=msg_header, files=files)
         return self._validate_zalo_response(response)
-    
+
     def upload_file(self, file_data: bytes, file_type: str = "file", file_name: str = "", mime_type: str = ""):
         headers = self.create_request_header(method="POST", type="file")
         if file_type == "file":
@@ -63,7 +63,7 @@ class Client(zalo_sdk.BaseClient):
         response = self.send_request(
             method="POST", url=url, body=body, headers=headers)
         return self._validate_zalo_response(response)
-    
+
     def get_zalo_oa_quotas(self, quota_owner: str, product_type: str = "", quota_type: str = ""):
         """
         Get Zalo OA quotas
@@ -79,7 +79,7 @@ class Client(zalo_sdk.BaseClient):
         body = {
             "quota_owner": quota_owner,
         }
-        
+
         # Validate product_type
         # cs: tin Tư vấn, transaction: tin Giao dịch
         valid_product_types = ["cs", "transaction"]
@@ -87,7 +87,7 @@ class Client(zalo_sdk.BaseClient):
             if product_type not in valid_product_types:
                 raise ValueError(f"Invalid product_type: {product_type}. Valid values are: {', '.join(valid_product_types)}")
             body["product_type"] = product_type
-        
+
         # Validate quota_type
         # sub_quota: quota tin theo gói dịch vụ OA
         # purchase_quota: quota tin mua lẻ (sắp ra mắt)
@@ -124,7 +124,7 @@ class Client(zalo_sdk.BaseClient):
             method="GET", url=url, body=params, headers=headers
         )
         return self._validate_zalo_response(response)
-    
+
     def get_user_detail(self, user_id):
         headers = self.create_request_header(method="GET")
         params = {
@@ -135,7 +135,10 @@ class Client(zalo_sdk.BaseClient):
             method="GET", url=url, body=params, headers=headers
         )
         return self._validate_zalo_response(response)
-    
+
+    def get_list(self, data):
+        pass
+
     def _validate_zalo_response(self, response):
         self.check_http_error(response)
 
