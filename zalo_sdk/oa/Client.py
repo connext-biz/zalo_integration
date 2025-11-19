@@ -136,8 +136,27 @@ class Client(zalo_sdk.BaseClient):
         )
         return self._validate_zalo_response(response)
 
-    def get_list(self, data):
-        pass
+    def get_list(self, data: dict):
+        headers = self.create_request_header(method="GET")
+        url = f"{self.endpoint_prefix}/v3.0/oa/user/getlist"
+        response = self.send_request(
+            method="GET",
+            url=url,
+            body=data,
+            headers=headers,
+        )
+        return self._validate_zalo_response(response)
+
+    def get_followers(self, data: dict):
+        headers = self.create_request_header(method="GET")
+        url = f"{self.endpoint_prefix}/v2.0/oa/getfollowers"
+        response = self.send_request(
+            method="GET",
+            url=url,
+            body=data,
+            headers=headers,
+        )
+        return self._validate_zalo_response(response)
 
     def _validate_zalo_response(self, response):
         self.check_http_error(response)
