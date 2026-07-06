@@ -158,6 +158,45 @@ class Client(zalo_sdk.BaseClient):
         )
         return self._validate_zalo_response(response)
 
+    def tag_follower(self, user_id, tag_name):
+        headers = self.create_request_header(method="POST")
+        body = {
+            "user_id": user_id,
+            "tag_name": tag_name,
+        }
+        url = f"{self.endpoint_prefix}/v2.0/oa/tag/tagfollower"
+        response = self.send_request(
+            method="POST", url=url, body=body, headers=headers)
+        return self._validate_zalo_response(response)
+
+    def rm_follower_from_tag(self, user_id, tag_name):
+        headers = self.create_request_header(method="POST")
+        body = {
+            "user_id": user_id,
+            "tag_name": tag_name,
+        }
+        url = f"{self.endpoint_prefix}/v2.0/oa/tag/rmfollowerfromtag"
+        response = self.send_request(
+            method="POST", url=url, body=body, headers=headers)
+        return self._validate_zalo_response(response)
+
+    def get_tags_of_oa(self):
+        headers = self.create_request_header(method="GET")
+        url = f"{self.endpoint_prefix}/v2.0/oa/tag/gettagsofoa"
+        response = self.send_request(
+            method="GET", url=url, headers=headers)
+        return self._validate_zalo_response(response)
+
+    def rm_tag(self, tag_name):
+        headers = self.create_request_header(method="POST")
+        body = {
+            "tag_name": tag_name,
+        }
+        url = f"{self.endpoint_prefix}/v2.0/oa/tag/rmtag"
+        response = self.send_request(
+            method="POST", url=url, body=body, headers=headers)
+        return self._validate_zalo_response(response)
+
     def _validate_zalo_response(self, response):
         self.check_http_error(response)
 
